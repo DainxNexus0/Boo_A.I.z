@@ -1,0 +1,550 @@
+/* =========================================================
+   BOO AI
+   Emo Princess / Fantasy Valley Foundation
+   ========================================================= */
+
+:root {
+  --midnight: #0d0920;
+  --deep-purple: #211238;
+  --purple: #51356f;
+  --lavender: #bca6dc;
+
+  --silver: #d9dce8;
+  --silver-soft: #aeb4c7;
+
+  --gold: #d9b765;
+  --gold-bright: #f0d58a;
+
+  --ruby: #8f1830;
+  --ruby-glow: #c52f4d;
+
+  --glass: rgba(13, 9, 32, 0.72);
+  --glass-light: rgba(255, 255, 255, 0.08);
+
+  --text: #f5f1fb;
+  --text-soft: #c9c1d8;
+
+  --shadow: rgba(0, 0, 0, 0.45);
+}
+
+/* -------------------------
+   Base
+   ------------------------- */
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+  color: var(--text);
+  background: var(--midnight);
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  /*
+    Fantasy valley foundation.
+    Later JavaScript can switch this environment
+    into the galaxy scene when Boo comes out.
+  */
+  background:
+    radial-gradient(
+      circle at 50% 10%,
+      rgba(124, 91, 161, 0.35),
+      transparent 35%
+    ),
+    linear-gradient(
+      to bottom,
+      #17112c 0%,
+      #2b2142 45%,
+      #172b2a 72%,
+      #0b1818 100%
+    );
+}
+
+/* -------------------------
+   Main App
+   ------------------------- */
+
+.app {
+  position: relative;
+  width: min(100%, 1100px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 24px;
+
+  background:
+    radial-gradient(
+      circle at 20% 80%,
+      rgba(143, 24, 48, 0.08),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(217, 183, 101, 0.08),
+      transparent 25%
+    );
+}
+
+/* -------------------------
+   Decorative Background
+   ------------------------- */
+
+.app::before,
+.app::after {
+  content: "";
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Distant fantasy mountains */
+.app::before {
+  left: -10%;
+  right: -10%;
+  bottom: -40px;
+  height: 260px;
+
+  background:
+    linear-gradient(
+      135deg,
+      transparent 25%,
+      rgba(24, 38, 38, 0.9) 26%,
+      rgba(38, 57, 50, 0.9) 48%,
+      transparent 49%
+    ),
+    linear-gradient(
+      225deg,
+      transparent 25%,
+      rgba(17, 29, 30, 0.95) 26%,
+      rgba(35, 52, 47, 0.95) 48%,
+      transparent 49%
+    );
+
+  opacity: 0.9;
+}
+
+/* Tiny ruby / star-like environmental accents */
+.app::after {
+  width: 7px;
+  height: 7px;
+  top: 18%;
+  left: 12%;
+
+  background: var(--ruby);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 8px rgba(197, 47, 77, 0.65),
+    210px 120px 0 -1px var(--gold),
+    540px 70px 0 -2px var(--ruby),
+    760px 190px 0 -1px var(--silver),
+    900px 90px 0 -2px var(--gold);
+
+  opacity: 0.65;
+}
+
+/* -------------------------
+   Header
+   ------------------------- */
+
+.boo-header {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  margin-bottom: 20px;
+  padding: 18px;
+
+  background: var(--glass);
+  border: 1px solid rgba(217, 183, 101, 0.35);
+  border-radius: 24px;
+
+  box-shadow:
+    0 12px 35px var(--shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  backdrop-filter: blur(14px);
+}
+
+.boo-image {
+  width: 82px;
+  height: 82px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border: 2px solid var(--silver);
+
+  box-shadow:
+    0 0 0 3px rgba(217, 183, 101, 0.18),
+    0 0 24px rgba(217, 183, 101, 0.2);
+}
+
+.boo-title h1 {
+  margin: 0;
+
+  font-size: clamp(2rem, 5vw, 3rem);
+  letter-spacing: 0.04em;
+
+  color: var(--gold-bright);
+
+  text-shadow:
+    0 2px 12px rgba(217, 183, 101, 0.3);
+}
+
+.boo-title p {
+  margin: 4px 0 0;
+  color: var(--text-soft);
+}
+
+/* -------------------------
+   Navigation
+   ------------------------- */
+
+.main-nav {
+  position: relative;
+  z-index: 3;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-bottom: 18px;
+}
+
+.main-nav button,
+.chat-form button,
+.dad-lens-content button,
+.diary-lock button,
+.diary-content button {
+  border: 1px solid rgba(217, 183, 101, 0.55);
+
+  color: var(--text);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(81, 53, 111, 0.9),
+      rgba(31, 18, 55, 0.9)
+    );
+
+  border-radius: 14px;
+
+  padding: 11px 16px;
+
+  font-family: inherit;
+  font-size: 0.98rem;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.main-nav button:hover,
+.chat-form button:hover,
+.dad-lens-content button:hover,
+.diary-lock button:hover,
+.diary-content button:hover {
+  transform: translateY(-2px);
+
+  border-color: var(--gold-bright);
+
+  box-shadow:
+    0 7px 20px rgba(0, 0, 0, 0.35),
+    0 0 14px rgba(217, 183, 101, 0.12);
+}
+
+/* -------------------------
+   Sections
+   ------------------------- */
+
+.section {
+  position: relative;
+  z-index: 2;
+
+  min-height: 480px;
+
+  padding: 20px;
+
+  background: var(--glass);
+
+  border: 1px solid rgba(217, 183, 101, 0.25);
+  border-radius: 26px;
+
+  box-shadow:
+    0 18px 45px var(--shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+  backdrop-filter: blur(16px);
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* -------------------------
+   Chat
+   ------------------------- */
+
+.chat-messages {
+  min-height: 360px;
+  max-height: 55vh;
+
+  overflow-y: auto;
+
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.message {
+  width: fit-content;
+  max-width: min(80%, 650px);
+
+  padding: 13px 16px;
+
+  line-height: 1.5;
+
+  border-radius: 18px;
+
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.boo-message {
+  align-self: flex-start;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(81, 53, 111, 0.9),
+      rgba(42, 27, 67, 0.92)
+    );
+
+  border: 1px solid rgba(192, 174, 220, 0.28);
+}
+
+.user-message {
+  align-self: flex-end;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(105, 78, 120, 0.9),
+      rgba(55, 36, 75, 0.92)
+    );
+
+  border: 1px solid rgba(217, 183, 101, 0.28);
+}
+
+/* -------------------------
+   Chat Input
+   ------------------------- */
+
+.chat-form {
+  display: flex;
+  gap: 10px;
+
+  margin-top: 16px;
+}
+
+.chat-form input {
+  flex: 1;
+
+  min-width: 0;
+
+  padding: 14px 16px;
+
+  color: var(--text);
+
+  background: rgba(7, 5, 16, 0.62);
+
+  border: 1px solid rgba(192, 174, 220, 0.3);
+  border-radius: 15px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.chat-form input::placeholder {
+  color: #aaa2b9;
+}
+
+.chat-form input:focus {
+  border-color: var(--gold);
+
+  box-shadow:
+    0 0 0 3px rgba(217, 183, 101, 0.1),
+    0 0 16px rgba(217, 183, 101, 0.08);
+}
+
+/* -------------------------
+   Diary
+   ------------------------- */
+
+.section-header h2,
+.dad-lens-header h2 {
+  margin-top: 0;
+  color: var(--gold-bright);
+}
+
+.section-header p,
+.dad-lens-header p {
+  color: var(--text-soft);
+}
+
+.diary-lock {
+  display: grid;
+  place-items: center;
+
+  min-height: 340px;
+
+  text-align: center;
+
+  padding: 30px;
+}
+
+.key-icon {
+  font-size: 3rem;
+
+  filter:
+    drop-shadow(0 0 10px rgba(217, 183, 101, 0.25));
+}
+
+.diary-lock h3 {
+  margin-bottom: 8px;
+  color: var(--silver);
+}
+
+.diary-lock p {
+  color: var(--text-soft);
+}
+
+.diary-content textarea {
+  width: 100%;
+  min-height: 340px;
+
+  resize: vertical;
+
+  padding: 18px;
+
+  color: var(--text);
+
+  background: rgba(7, 5, 16, 0.62);
+
+  border: 1px solid rgba(192, 174, 220, 0.28);
+  border-radius: 18px;
+
+  outline: none;
+
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.diary-content textarea:focus {
+  border-color: var(--gold);
+}
+
+/* -------------------------
+   Dad Lens / Papa Bear
+   ------------------------- */
+
+.dad-lens-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-bottom: 25px;
+}
+
+.papa-bear-icon {
+  display: grid;
+  place-items: center;
+
+  width: 72px;
+  height: 72px;
+
+  font-size: 2.3rem;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(217, 183, 101, 0.18),
+      rgba(81, 53, 111, 0.4)
+    );
+
+  border: 1px solid rgba(217, 183, 101, 0.45);
+
+  box-shadow:
+    0 0 22px rgba(217, 183, 101, 0.1);
+}
+
+.dad-lens-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  max-width: 700px;
+}
+
+.dad-lens-content p {
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+
+.dad-lens-response {
+  margin-top: 25px;
+
+  padding: 18px;
+
+  background: rgba(7, 5, 16, 0.55);
+
+  border-left: 3px solid var(--gold);
+
+  border-radius: 12px;
+
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* -------------------------
+   Scrollbars
+   ------------------------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--purple) var(--midnight);
+}
+
+/* -------------------------
+   Mobile
+   ------------------------- */
+
+@media (max-width: 650
