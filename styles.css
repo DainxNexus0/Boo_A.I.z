@@ -1,4 +1,4 @@
-/* =========================================================
+3/* =========================================================
    BOO AI
    Emo Princess / Fantasy Valley Foundation
    ========================================================= */
@@ -545,7 +545,23 @@ body {
 
 /* -------------------------
    Mobile
-   ------------------------- */
+   ------------------------- 
+@media (max-width: 650px) {
+  .app {
+    padding: 14px;
+  }
 
-@media (max-width: 650
-. contact - icon, width 32 pixels, height 32 pixels, border radius50 percent, object fit cover, margin right 8 pixels, vertical align middle. 
+  .boo-header {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.contact-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+  vertical-align: middle;
+}
