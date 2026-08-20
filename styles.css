@@ -545,13 +545,14 @@ body {
 
 /* -------------------------
    Mobile
-   ------------------------- 
+   ------------------------- */
+
 @media (max-width: 650px) {
   .app {
     padding: 14px;
   }
 
-  .boo-header =contact-icon" {
+  .boo-header {
     flex-direction: column;
     text-align: center;
   }
@@ -564,4 +565,3 @@ body {
   object-fit: cover;
   margin-right: 8px;
   vertical-align: middle;
-}
