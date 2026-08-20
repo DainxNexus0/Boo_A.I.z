@@ -157,7 +157,7 @@ body {
    Header
    ------------------------- */
 
-.boo-header {
+.boo-header =contact-icon"{
   position: relative;
   z-index: 2;
 
@@ -179,7 +179,7 @@ body {
   backdrop-filter: blur(14px);
 }
 
-.boo-image {
+.boo-image ="contact-icon"{
   width: 82px;
   height: 82px;
 
@@ -551,7 +551,7 @@ body {
     padding: 14px;
   }
 
-  .boo-header {
+  .boo-header =contact-icon" {
     flex-direction: column;
     text-align: center;
   }
