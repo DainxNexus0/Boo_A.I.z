@@ -25,7 +25,7 @@ try {
       },
 
       body: JSON.stringify({
-        model: "gpt-5.6-luna",
+        model: "gpt-5",
 
         instructions: `
 You are Boo, Anna's AI companion.
