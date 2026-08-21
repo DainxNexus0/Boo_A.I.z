@@ -1,31 +1,28 @@
-try {
-  const body = await context.request.json();
-  const message = body?.message;
+async fetch(request, env) {
+    const url = new URL(request.url);
 
-  if (!message || typeof message !== "string") {
-    return new Response(
-      JSON.stringify({ error: "Please send a message." }),
-      {
-        status: 400,
-        headers: {
-          "Content-Type": "application/json"
+    if (url.pathname === "/chat" && request.method === "POST") {
+      try {
+        const body = await request.json();
+        const message = body?.message;
+
+        if (!message || typeof message !== "string") {
+          return Response.json(
+            { error: "Please send a message." },
+            { status: 400 }
+          );
         }
-      }
-    );
-  }
 
-  const response = await fetch(
-    "https://api.openai.com/v1/responses",
-    {
-      method: "POST",
-
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${context.env.OPENAI_API_KEY}`
-      },
-
-      body: JSON.stringify({
-        model: "gpt-5.6-luna",
+        const response = await fetch(
+          "https://api.openai.com/v1/responses",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${env.OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+              model: "gpt-5.6-luna",
 
         instructions: `
 You are Boo, Anna's AI companion.
