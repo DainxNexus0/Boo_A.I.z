@@ -774,8 +774,6 @@ chatForm.addEventListener("submit", async (event) => {
 
 });
 
-messageInput.focus();
-
   `;
 }
 
