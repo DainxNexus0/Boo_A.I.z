@@ -712,7 +712,6 @@ function addMessage(text, type) {
 
 
 // CHAT
-
 chatForm.addEventListener("submit", async (event) => {
 
   event.preventDefault();
@@ -724,22 +723,58 @@ chatForm.addEventListener("submit", async (event) => {
     return;
   }
 
-      } catch (error) {
+  addMessage(message, "user");
 
-      console.error(error);
+  messageInput.value = "";
+  messageInput.style.height = "auto";
 
-      addMessage(
-        "Something went wrong connecting to J.S.",
-        "assistant"
-      );
+  sendButton.disabled = true;
+  avatarActive(true);
 
-    } finally {
+  try {
 
-      avatarActive(false);
+    const response =
+      await fetch("/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: message })
+      });
 
-      sendButton.disabled = false;
+    if (!response.ok) {
+      throw new Error("Bad response: " + response.status);
+    }
 
-      messageInput.focus();
+    const data = await response.json();
+
+    addMessage(
+      data.reply || "No reply received.",
+      "assistant"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    addMessage(
+      "Something went wrong connecting to J.S.",
+      "assistant"
+    );
+
+  } finally {
+
+    avatarActive(false);
+
+    sendButton.disabled = false;
+
+    messageInput.focus();
+
+  }
+
+});
+
+messageInput.focus();
 
     }
 
