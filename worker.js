@@ -724,40 +724,164 @@ chatForm.addEventListener("submit", async (event) => {
     return;
   }
 
-  addMessage(message, "user");
+      } catch (error) {
 
-  messageInput.value = "";
+      console.error(error);
 
-  messageInput.style.height = "auto";
+      addMessage(
+        "Something went wrong connecting to J.S.",
+        "assistant"
+      );
 
-  sendButton.disabled = true;
+    } finally {
 
-  avatarActive(true);
+      avatarActive(false);
+
+      sendButton.disabled = false;
+
+      messageInput.focus();
+
+    }
+
+  });
+
+  messageInput.focus();
+
+  `;
+}
+
+
+// ========================================
+// AVATAR
+// ========================================
+
+async function getAvatar(env) {
+
+  if (!env || !env.AVATAR_URL) {
+
+    return new Response(
+      "Avatar is not configured yet.",
+      {
+        status: 404,
+        headers: corsHeaders()
+      }
+    );
+  }
 
   try {
 
     const response =
-      await fetch("/api/chat", {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify({
-          message: message
-        })
-      });
+      await fetch(env.AVATAR_URL);
 
     if (!response.ok) {
-      throw new Error("Chat request failed");
+
+      return new Response(
+        "Avatar could not be loaded.",
+        {
+          status: 404,
+          headers: corsHeaders()
+        }
+      );
     }
 
-    const data =
-      await response.json();
+    return new Response(
+      response.body,
+      {
+        status: 200,
+        headers: {
+          "Content-Type":
+            response.headers.get("Content-Type") ||
+            "image/png",
 
-    addMessage(
-      data.reply ||
-      "I didn't get a response.",
-      "assistant"
+          "Cache-Control":
+            "public, max-age=86400",
+
+          ...corsHeaders()
+        }
+      }
     );
+
+  } catch (error) {
+
+    console.error("Avatar error:", error);
+
+    return new Response(
+      "Avatar error.",
+      {
+        status: 500,
+        headers: corsHeaders()
+      }
+    );
+  }
+}
+
+
+// ========================================
+// CHAT API
+// ========================================
+
+async function handleChat(request, env) {
+
+  try {
+
+    const body =
+      await request.json();
+
+    const message =
+      typeof body.message === "string"
+        ? body.message.trim()
+        : "";
+
+    if (!message) {
+
+      return new Response(
+        JSON.stringify({
+          error: "Message is required."
+        }),
+        {
+          status: 400,
+          headers: {
+            "Content-Type":
+              "application/json",
+            ...corsHeaders()
+          }
+        }
+      );
+    }
+
+    const reply =
+      "J.S. received: " + message;
+
+    return new Response(
+      JSON.stringify({
+        reply: reply
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type":
+            "application/json",
+          ...corsHeaders()
+        }
+      }
+    );
+
+  } catch (error) {
+
+    console.error("Chat error:", error);
+
+    return new Response(
+      JSON.stringify({
+        error: "Unable to process request."
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type":
+            "application/json",
+          ...corsHeaders()
+        }
+      }
+    );
+  }
+}
