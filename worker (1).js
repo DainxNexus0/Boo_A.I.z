@@ -2,7 +2,6 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Allow browser requests
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
@@ -10,25 +9,22 @@ export default {
       });
     }
 
-    // Main app
     if (url.pathname === "/" || url.pathname === "/index.html") {
       return new Response(getHTML(), {
         headers: {
-          "content-type": "text/html; charset=UTF-8",
-          "cache-control": "no-store",
+          "Content-Type": "text/html; charset=UTF-8",
+          "Cache-Control": "no-store",
           ...corsHeaders()
         }
       });
     }
 
-    // Avatar asset
     if (url.pathname === "/avatar.png") {
-      return getAvatar(request, env);
+      return getAvatar(env);
     }
 
-    // API endpoint used by the app
     if (url.pathname === "/api/chat" && request.method === "POST") {
-      return handleChat(request, env);
+      return handleChat(request);
     }
 
     return new Response("Not Found", {
@@ -38,11 +34,6 @@ export default {
   }
 };
 
-
-// ===============================
-// CORS
-// ===============================
-
 function corsHeaders() {
   return {
     "Access-Control-Allow-Origin": "*",
@@ -51,28 +42,12 @@ function corsHeaders() {
   };
 }
 
-
-// ===============================
-// MAIN HTML
-// ===============================
-
 function getHTML() {
   return `<!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <meta
-    name="theme-color"
-    content="#08080a"
-  >
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>J.S.</title>
 
   <style>
@@ -85,14 +60,9 @@ function getHTML() {
   <div id="app">
 
     <header class="topbar">
-
       <div class="brand">
-
         <div class="mini-avatar">
-          <img
-            src="/avatar.png"
-            alt="J.S."
-          >
+          <img src="/avatar.png" alt="J.S.">
         </div>
 
         <div>
@@ -103,28 +73,18 @@ function getHTML() {
             Online
           </div>
         </div>
-
       </div>
 
-      <button
-        id="menuButton"
-        class="menu-button"
-        type="button"
-      >
+      <button id="menuButton" class="menu-button" type="button">
         ☰
       </button>
-
     </header>
-
 
     <main>
 
       <section class="avatar-section">
 
-        <div
-          id="avatarContainer"
-          class="avatar-container"
-        >
+        <div id="avatarContainer" class="avatar-container">
 
           <div class="avatar-glow"></div>
 
@@ -134,35 +94,25 @@ function getHTML() {
             id="mainAvatar"
             class="main-avatar"
             src="/avatar.png"
-            alt="J.S. responsive avatar"
+            alt="J.S."
           >
 
         </div>
 
         <h1>J.S.</h1>
 
-        <div
-          id="assistantStatus"
-          class="assistant-status"
-        >
+        <div id="assistantStatus" class="assistant-status">
           Ready
         </div>
 
       </section>
 
-
-      <section
-        id="chatContainer"
-        class="chat-container"
-      >
+      <section id="chatContainer" class="chat-container">
 
         <div class="message assistant">
 
           <div class="message-avatar">
-            <img
-              src="/avatar.png"
-              alt="J.S."
-            >
+            <img src="/avatar.png" alt="J.S.">
           </div>
 
           <div class="bubble">
@@ -175,7 +125,6 @@ function getHTML() {
 
     </main>
 
-
     <footer class="input-area">
 
       <form id="chatForm">
@@ -186,10 +135,7 @@ function getHTML() {
           rows="1"
         ></textarea>
 
-        <button
-          id="sendButton"
-          type="submit"
-        >
+        <button id="sendButton" type="submit">
           ➤
         </button>
 
@@ -201,30 +147,19 @@ function getHTML() {
 
     </footer>
 
+    <div id="menuPanel" class="menu-panel" hidden>
 
-    <div
-      id="menuPanel"
-      class="menu-panel"
-      hidden
-    >
-
-      <button
-        id="closeMenu"
-        type="button"
-      >
+      <button id="closeMenu" type="button">
         Close
       </button>
 
       <h2>J.S.</h2>
 
-      <p>
-        Assistant controls
-      </p>
+      <p>Assistant controls</p>
 
     </div>
 
   </div>
-
 
   <script>
     ${getJavaScript()}
@@ -233,24 +168,6 @@ function getHTML() {
 </body>
 </html>`;
 }
-
-
-// ===============================
-// END OF PART 1
-// ===============================
-
-
-// The CSS and JavaScript functions,
-// plus the avatar/API handling,
-// continue in Part 2.// ===============================
-// PART 2
-// CSS + JAVASCRIPT + AVATAR + API
-// ===============================
-
-
-// ===============================
-// CSS
-// ===============================
 
 function getCSS() {
   return `
@@ -287,19 +204,16 @@ function getCSS() {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      position: relative;
     }
 
     .topbar {
       height: 72px;
-      width: 100%;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 12px 18px;
       border-bottom: 1px solid rgba(255,255,255,.08);
       background: rgba(8,8,10,.92);
-      backdrop-filter: blur(12px);
       position: relative;
       z-index: 10;
     }
@@ -317,7 +231,6 @@ function getCSS() {
       overflow: hidden;
       border: 1px solid rgba(255,255,255,.18);
       background: #111116;
-      flex-shrink: 0;
     }
 
     .mini-avatar img {
@@ -329,7 +242,6 @@ function getCSS() {
     .brand-name {
       font-size: 17px;
       font-weight: 700;
-      letter-spacing: .4px;
     }
 
     .online {
@@ -346,7 +258,6 @@ function getCSS() {
       height: 7px;
       border-radius: 50%;
       background: #42e879;
-      box-shadow: 0 0 9px rgba(66,232,121,.8);
     }
 
     .menu-button {
@@ -357,10 +268,6 @@ function getCSS() {
       width: 44px;
       height: 44px;
       border-radius: 12px;
-    }
-
-    .menu-button:hover {
-      background: rgba(255,255,255,.08);
     }
 
     main {
@@ -396,11 +303,8 @@ function getCSS() {
       border-radius: 50%;
       background: rgba(255,255,255,.09);
       filter: blur(30px);
-      transform: scale(.9);
       opacity: .65;
-      transition:
-        transform .25s ease,
-        opacity .25s ease;
+      transition: .25s ease;
     }
 
     .avatar-ring {
@@ -408,13 +312,8 @@ function getCSS() {
       inset: 0;
       border-radius: 50%;
       border: 1px solid rgba(255,255,255,.18);
-      box-shadow:
-        0 0 25px rgba(255,255,255,.08),
-        inset 0 0 25px rgba(255,255,255,.05);
       pointer-events: none;
-      transition:
-        transform .2s ease,
-        border-color .2s ease;
+      transition: .2s ease;
     }
 
     .main-avatar {
@@ -427,9 +326,7 @@ function getCSS() {
       z-index: 2;
       border: 1px solid rgba(255,255,255,.14);
       box-shadow: 0 10px 50px rgba(0,0,0,.45);
-      transition:
-        transform .2s ease,
-        filter .2s ease;
+      transition: .2s ease;
     }
 
     .avatar-container.active .main-avatar {
@@ -449,7 +346,6 @@ function getCSS() {
     .avatar-section h1 {
       margin: 0;
       font-size: 25px;
-      letter-spacing: .8px;
     }
 
     .assistant-status {
@@ -488,7 +384,7 @@ function getCSS() {
     }
 
     .bubble {
-      max-width: min(620px, 78%);
+      max-width: 78%;
       padding: 12px 15px;
       border-radius: 16px;
       background: #17171c;
@@ -498,10 +394,8 @@ function getCSS() {
     }
 
     .input-area {
-      width: min(900px, 100%);
-      margin: 0 auto;
-      padding: 12px 18px 18px;
       width: 100%;
+      padding: 12px 18px 18px;
     }
 
     #chatForm {
@@ -525,14 +419,6 @@ function getCSS() {
       background: #121216;
     }
 
-    #messageInput:focus {
-      border-color: rgba(255,255,255,.28);
-    }
-
-    #messageInput::placeholder {
-      color: rgba(255,255,255,.38);
-    }
-
     #sendButton {
       width: 48px;
       height: 48px;
@@ -546,7 +432,6 @@ function getCSS() {
 
     #sendButton:disabled {
       opacity: .45;
-      cursor: not-allowed;
     }
 
     .hint {
@@ -565,8 +450,7 @@ function getCSS() {
       padding: 18px;
       border: 1px solid rgba(255,255,255,.12);
       border-radius: 16px;
-      background: rgba(18,18,22,.97);
-      box-shadow: 0 20px 50px rgba(0,0,0,.45);
+      background: #121216;
       z-index: 30;
     }
 
@@ -579,97 +463,42 @@ function getCSS() {
       color: white;
     }
 
-    .menu-panel h2 {
-      margin-top: 15px;
-      margin-bottom: 5px;
-    }
-
-    .menu-panel p {
-      color: rgba(255,255,255,.55);
-      font-size: 13px;
-    }
-
     @media (max-width: 600px) {
-      .avatar-section {
-        min-height: 300px;
-        padding-top: 20px;
-      }
-
       .avatar-container {
         width: 210px;
         height: 210px;
-      }
-
-      .bubble {
-        max-width: 82%;
       }
     }
   `;
 }
 
-
-// ===============================
-// JAVASCRIPT
-// ===============================
-
 function getJavaScript() {
   return `
 
-    const chatForm =
-      document.getElementById("chatForm");
+    const chatForm = document.getElementById("chatForm");
+    const messageInput = document.getElementById("messageInput");
+    const sendButton = document.getElementById("sendButton");
+    const chatContainer = document.getElementById("chatContainer");
+    const avatarContainer = document.getElementById("avatarContainer");
+    const assistantStatus = document.getElementById("assistantStatus");
 
-    const messageInput =
-      document.getElementById("messageInput");
+    const menuButton = document.getElementById("menuButton");
+    const menuPanel = document.getElementById("menuPanel");
+    const closeMenu = document.getElementById("closeMenu");
 
-    const sendButton =
-      document.getElementById("sendButton");
-
-    const chatContainer =
-      document.getElementById("chatContainer");
-
-    const avatarContainer =
-      document.getElementById("avatarContainer");
-
-    const assistantStatus =
-      document.getElementById("assistantStatus");
-
-    const menuButton =
-      document.getElementById("menuButton");
-
-    const menuPanel =
-      document.getElementById("menuPanel");
-
-    const closeMenu =
-      document.getElementById("closeMenu");
-
-
-    // -------------------------------
-    // MENU
-    // -------------------------------
-
-    menuButton.addEventListener("click", () => {
+    menuButton.addEventListener("click", function () {
       menuPanel.hidden = !menuPanel.hidden;
     });
 
-    closeMenu.addEventListener("click", () => {
+    closeMenu.addEventListener("click", function () {
       menuPanel.hidden = true;
     });
 
-
-    // -------------------------------
-    // TEXTAREA AUTO SIZE
-    // -------------------------------
-
-    messageInput.addEventListener("input", () => {
+    messageInput.addEventListener("input", function () {
       messageInput.style.height = "auto";
       messageInput.style.height =
         Math.min(messageInput.scrollHeight, 150) + "px";
     });
-
-
-    // -------------------------------
-    // AVATAR RESPONSE ANIMATION
-    // -------------------------------
 
     function avatarActive(active) {
       if (active) {
@@ -681,58 +510,34 @@ function getJavaScript() {
       }
     }
 
-
-    // -------------------------------
-    // ADD MESSAGE
-    // -------------------------------
-
     function addMessage(text, type) {
-
-      const message =
-        document.createElement("div");
-
-      message.className =
-        "message " + type;
+      const message = document.createElement("div");
+      message.className = "message " + type;
 
       if (type === "assistant") {
+        const avatar = document.createElement("div");
+        avatar.className = "message-avatar";
 
-        message.innerHTML = \`
-          <div class="message-avatar">
-            <img
-              src="/avatar.png"
-              alt="J.S."
-            >
-          </div>
+        const image = document.createElement("img");
+        image.src = "/avatar.png";
+        image.alt = "J.S.";
 
-          <div class="bubble"></div>
-        \`;
-
-      } else {
-
-        message.innerHTML = \`
-          <div class="bubble"></div>
-        \`;
+        avatar.appendChild(image);
+        message.appendChild(avatar);
       }
 
-      message.querySelector(".bubble").textContent = text;
+      const bubble = document.createElement("div");
+      bubble.className = "bubble";
+      bubble.textContent = text;
 
+      message.appendChild(bubble);
       chatContainer.appendChild(message);
-
-      chatContainer.scrollTop =
-        chatContainer.scrollHeight;
     }
 
-
-    // -------------------------------
-    // CHAT
-    // -------------------------------
-
-    chatForm.addEventListener("submit", async (event) => {
-
+    chatForm.addEventListener("submit", async function (event) {
       event.preventDefault();
 
-      const message =
-        messageInput.value.trim();
+      const message = messageInput.value.trim();
 
       if (!message) {
         return;
@@ -742,36 +547,26 @@ function getJavaScript() {
 
       messageInput.value = "";
       messageInput.style.height = "auto";
-
       sendButton.disabled = true;
 
       avatarActive(true);
 
       try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: message
+          })
+        });
 
-        const response =
-          await fetch("/api/chat", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              message: message
-            })
-          });
-
-        const data =
-          await response.json();
+        const data = await response.json();
 
         if (data.reply) {
-
-          addMessage(
-            data.reply,
-            "assistant"
-          );
-
+          addMessage(data.reply, "assistant");
         } else {
-
           addMessage(
             "I didn't get a response from the Worker.",
             "assistant"
@@ -779,7 +574,6 @@ function getJavaScript() {
         }
 
       } catch (error) {
-
         console.error(error);
 
         addMessage(
@@ -788,98 +582,46 @@ function getJavaScript() {
         );
 
       } finally {
-
         avatarActive(false);
-
         sendButton.disabled = false;
-
         messageInput.focus();
       }
-
     });
-
-
-    // -------------------------------
-    // STARTUP
-    // -------------------------------
 
     messageInput.focus();
 
   `;
 }
 
-
-// ===============================
-// AVATAR HANDLER
-// ===============================
-
-async function getAvatar(request, env) {
-
-  /*
-    The Worker first checks for an avatar
-    stored in the environment.
-
-    If you later connect an R2 bucket,
-    KV asset, or another asset source,
-    this is the place we can wire it in.
-  */
-
+async function getAvatar(env) {
   if (env && env.AVATAR_URL) {
-
     try {
-
-      const response =
-        await fetch(env.AVATAR_URL);
+      const response = await fetch(env.AVATAR_URL);
 
       if (response.ok) {
-
-        return new Response(
-          response.body,
-          {
-            headers: {
-              "content-type":
-                response.headers.get(
-                  "content-type"
-                ) || "image/png",
-
-              "cache-control":
-                "public, max-age=86400",
-
-              ...corsHeaders()
-            }
+        return new Response(response.body, {
+          headers: {
+            "Content-Type":
+              response.headers.get("Content-Type") || "image/png",
+            "Cache-Control": "public, max-age=86400",
+            ...corsHeaders()
           }
-        );
+        });
       }
-
     } catch (error) {
-
-      console.error(
-        "Avatar fetch failed:",
-        error
-      );
+      console.error("Avatar fetch failed:", error);
     }
   }
 
-  return new Response(
-    "Avatar asset not configured yet.",
-    {
-      status: 404,
-      headers: corsHeaders()
-    }
-  );
+  return new Response("Avatar not configured yet.", {
+    status: 404,
+    headers: corsHeaders()
+  });
 }
 
-
-// ===============================
-// CHAT HANDLER
-// ===============================
-
-async function handleChat(request, env) {
-
+async function handleChat(request) {
   try {
-
-    const body =
-      await request.json();
+    const body = await request.json();
 
     const message =
       typeof body.message === "string"
@@ -887,7 +629,6 @@ async function handleChat(request, env) {
         : "";
 
     if (!message) {
-
       return new Response(
         JSON.stringify({
           error: "Message is required."
@@ -895,49 +636,28 @@ async function handleChat(request, env) {
         {
           status: 400,
           headers: {
-            "content-type":
-              "application/json",
+            "Content-Type": "application/json",
             ...corsHeaders()
           }
         }
       );
     }
 
-
-    /*
-      If an AI API is connected later,
-      this is where the Worker will send
-      the user's message.
-
-      For now we return a safe test response
-      so the interface can be tested without
-      exposing an API key in the browser.
-    */
-
-    const reply =
-      "J.S. received: " + message;
-
-
     return new Response(
       JSON.stringify({
-        reply: reply
+        reply: "J.S. received: " + message
       }),
       {
         status: 200,
         headers: {
-          "content-type":
-            "application/json",
+          "Content-Type": "application/json",
           ...corsHeaders()
         }
       }
     );
 
   } catch (error) {
-
-    console.error(
-      "Chat error:",
-      error
-    );
+    console.error("Chat error:", error);
 
     return new Response(
       JSON.stringify({
@@ -946,8 +666,7 @@ async function handleChat(request, env) {
       {
         status: 500,
         headers: {
-          "content-type":
-            "application/json",
+          "Content-Type": "application/json",
           ...corsHeaders()
         }
       }
