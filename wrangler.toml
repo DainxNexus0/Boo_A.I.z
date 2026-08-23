@@ -2,5 +2,5 @@ name = "boo-a-i-z-0-nexus"
 main = "worker.js"
 compatibility_date = "2026-08-21"
 
-[assets] src="/avatar.png"
+[assets]
 directory = "./"
