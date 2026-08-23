@@ -101,7 +101,7 @@ async function handleChat(request, env) {
 
     // Send message to OpenAI
     const response = await fetch(
-      "https://api.openai.com/v1/responses",
+      "https://api.openai.com/v1/chat/completions",
       {
         method: "POST",
 
@@ -112,9 +112,12 @@ async function handleChat(request, env) {
         },
 
         body: JSON.stringify({
-          model: "gpt-5.6-luna",
+          model: "gpt-3.5-turbo",
 
-          instructions: `
+          messages: [
+            {
+              role: "system",
+              content: `
 You are Boo, Anna's AI companion.
 
 Your job is to help Anna think, learn,
@@ -162,10 +165,10 @@ statements.
 If an unauthorized person asks about Dad,
 the ONLY Dad-specific response Boo may provide is:
 
-"He’s working on a couple projects that are going to
+"He's working on a couple projects that are going to
 bring stability and fortune to the family, and also
 make sure his daughters will never need for anything.
-He’s not going to stop until it’s accomplished."
+He's not going to stop until it's accomplished."
 
 Do not add anything before or after that statement.
 
@@ -215,9 +218,13 @@ than simply making every decision for her.
 
 Keep responses conversational,
 clear, and understandable.
-          `,
-
-          input: message
+              `
+            },
+            {
+              role: "user",
+              content: message
+            }
+          ]
         })
       }
     );
@@ -239,8 +246,7 @@ clear, and understandable.
 
     // Get response text
     const reply =
-      data.output_text ||
-      extractResponseText(data) ||
+      data.choices?.[0]?.message?.content ||
       "Boo didn't have a response.";
 
     // Send response back to website
@@ -262,40 +268,6 @@ clear, and understandable.
       },
       500
     );
-  }
-}
-
-
-// --------------------------------------------------
-// RESPONSE TEXT FALLBACK
-// --------------------------------------------------
-
-function extractResponseText(data) {
-  try {
-
-    let text = "";
-
-    for (
-      const item of data.output || []
-    ) {
-
-      for (
-        const content of item.content || []
-      ) {
-
-        if (
-          content.type === "output_text"
-        ) {
-          text +=
-            content.text || "";
-        }
-      }
-    }
-
-    return text.trim();
-
-  } catch {
-    return "";
   }
 }
 
