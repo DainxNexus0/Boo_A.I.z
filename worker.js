@@ -380,4 +380,45 @@ form.addEventListener("submit", async (event) => {
     return;
   }
 
-  addMessage(message, "
+  addMessage(message, "user");
+
+  input.value = "";
+  input.style.height = "auto";
+
+  send.disabled = true;
+
+  const thinking = addMessage("...", "boo");
+
+  try {
+
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: message })
+    });
+
+    const data = await response.json();
+
+    thinking.textContent = data.reply || data.error || "Something went wrong.";
+
+  } catch (error) {
+
+    thinking.textContent = "Something went wrong connecting to Boo.";
+
+  } finally {
+
+    send.disabled = false;
+    input.focus();
+
+  }
+
+});
+
+input.focus();
+
+</script>
+
+</body>
+</html>`;
