@@ -1,8 +1,6 @@
 name = "boo-a-i-z-0-nexus"
 main = "worker.js"
 compatibility_date = "2026-08-21"
-npm install
-npx wrangler deploy
-That's it — Wrangler handles the AI 
+
 [assets]
 directory = "./"
